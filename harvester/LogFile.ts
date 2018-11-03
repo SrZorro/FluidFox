@@ -8,12 +8,18 @@ export default class LogFile {
     private path: string;
     private newLogCb: (nameSpace: string, file: string, newLog: string) => void;
     private currSize: number;
+    private watcher: fs.FSWatcher;
     constructor(nameSpace: string, path: string, newLogCb: (nameSpace: string, file: string, newLog: string) => void) {
         this.nameSpace = nameSpace;
         this.path = path;
         this.newLogCb = newLogCb;
 
         this.watch();
+    }
+
+    public destroy() {
+        this.watcher.close();
+        this.newLogCb = () => { /* void */ };
     }
 
     private watch() {
@@ -26,11 +32,11 @@ export default class LogFile {
         debug(`Watching file: ${this.path}`);
 
         this.currSize = fs.readFileSync(this.path, "utf8").split(os.EOL).length;
-        const watcher = fs.watch(this.path, (evt, fileName) => {
+        this.watcher = fs.watch(this.path, (evt, fileName) => {
             switch (evt) {
                 case "rename":
                     // File has ben rotated, start new watcher
-                    watcher.close();
+                    this.watcher.close();
                     this.watch();
                     break;
                 case "change":
