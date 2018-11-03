@@ -1,5 +1,0 @@
-{
-    "watch": ["harvester"],
-    "ext": "ts",
-    "exec": "ts-node ./harvester/index.ts"
-  }

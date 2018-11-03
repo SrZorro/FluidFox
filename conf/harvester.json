@@ -1,0 +1,13 @@
+{
+    "nodeName": "application_server",
+    "logStreams": {
+        "harvester": [
+            "S:\\git\\Log.io\\logs\\logs.txt",
+            "S:\\git\\Log.io\\logs\\tomate.txt"
+        ]
+    },
+    "server": {
+        "host": "localhost",
+        "port": 28777
+    }
+}

@@ -11,7 +11,11 @@ export default class Controls extends Component<any, any> {
     public render() {
         return (
             <div class={classMain}>
+                <p>{JSON.stringify(this.props.harvestersList)}</p>
             </div>
         );
+    }
+    public componentWillReceiveProps() {
+        console.log(this.props.harvestersList);
     }
 }

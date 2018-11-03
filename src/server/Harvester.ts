@@ -1,16 +1,15 @@
 import { IWebSocket, IHarvesterConf } from "./types";
-import { clients } from "./index";
+import { clients } from "./ElasticFox";
 import * as Debug from "debug";
-const debug = Debug("logio:Harvester");
+const debug = Debug("elasticfox:Harvester");
 
 export default class Harvester {
-    private ws: IWebSocket;
-    private nodeName: string;
-    private logStreams: {
+    public nodeName: string;
+    public logStreams: {
         [key: string]: string[];
     };
+    private ws: IWebSocket;
     constructor(ws, config: IHarvesterConf) {
-        debug("created harvester");
         this.ws = ws;
         this.nodeName = config.nodeName;
         this.logStreams = config.logStreams;
@@ -35,7 +34,7 @@ export default class Harvester {
         switch (state) {
             case "newLog":
                 for (const [id, client] of clients) {
-                    client.newLog(payload.nameSpace, payload.file, payload.newLog);
+                    // client.newLog(payload.nameSpace, payload.file, payload.newLog);
                 }
                 break;
             default:

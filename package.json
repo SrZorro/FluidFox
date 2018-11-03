@@ -4,11 +4,13 @@
   "version": "1.0.0",
   "author": "Marc 'Fox' Salva Montaner <fox@foxdev.io>",
   "scripts": {
-    "server:watch": "nodemon --config nodemon-server.json",
-    "harvester:watch": "nodemon --config nodemon-harvester.json",
-    "client:watch": "webpack --mode=development --watch"
+    "server:watch": "nodemon dist/index.js server conf/server.json",
+    "harvester:watch": "nodemon --inspect dist/index.js harvester conf/harvester.json",
+    "webpack:watch": "webpack --mode=development --watch --display-error-details"
   },
   "dependencies": {
+    "ajv": "^6.5.4",
+    "commander": "^2.19.0",
     "debug": "^4.1.0",
     "events": "^3.0.0",
     "express": "^4.16.4",

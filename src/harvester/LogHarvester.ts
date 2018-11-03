@@ -1,13 +1,25 @@
 import * as WebSocket from "ws";
 import * as Debug from "debug";
 const debug = Debug("harvester:Harvester");
-import { config } from "./index";
 import LogFile from "./LogFile";
+import { EventEmitter } from "events";
 
-export default class Harvester {
+export interface IConfig {
+    nodeName: string;
+    logStreams: {
+        [key: string]: string[];
+    };
+    server: {
+        host: string;
+        port: number;
+    };
+}
+
+export default class Harvester extends EventEmitter {
     private ws: WebSocket;
     private logFiles: LogFile[] = [];
-    constructor() {
+    constructor(config: IConfig) {
+        super();
         this.ws = new WebSocket(`ws://${config.server.host}:${config.server.port}`);
         this.ws.on("open", () => {
             debug("connected");
@@ -26,10 +38,22 @@ export default class Harvester {
             }
         });
 
+        this.ws.on("error", () => {
+            debug("Connection error");
+        });
+
         this.ws.on("close", () => {
             debug("Server disconnected");
+            this.logFiles.map((logFile, i) => {
+                this.logFiles[i].destroy();
+                delete this.logFiles[i];
+            });
+            this.ws.removeAllListeners("open");
+            this.ws.removeAllListeners("error");
+            this.ws.removeAllListeners("message");
+            this.ws.removeAllListeners("close");
             this.ws.close();
-            // reconnect();
+            this.emit("die");
         });
     }
 
