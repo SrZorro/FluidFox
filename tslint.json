@@ -1,0 +1,12 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "ordered-imports": false,
+        "curly": [
+            true,
+            "ignore-same-line"
+        ],
+        "object-literal-sort-keys": false,
+        "forin": false
+    }
+}

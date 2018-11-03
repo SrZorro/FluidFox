@@ -5,17 +5,20 @@
   "author": "Marc 'Fox' Salva Montaner <fox@foxdev.io>",
   "scripts": {
     "server:watch": "nodemon --config nodemon-server.json",
-    "client:watch": "nodemon --config nodemon-client.json"
+    "client:watch": "nodemon --config nodemon-client.json",
   },
   "dependencies": {
+    "debug": "^4.1.0",
     "express": "^4.16.4",
     "node-uuid": "^1.4.8",
     "ws": "^6.1.0"
   },
   "devDependencies": {
+    "@types/debug": "0.0.31",
     "@types/node-uuid": "0.0.28",
     "@types/ws": "^6.0.1",
     "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
     "typescript": "^3.1.6"
   }
 }
