@@ -32,9 +32,9 @@ export default class Harvester {
 
     private state(state: string, payload) {
         switch (state) {
-            case "newLog":
+            case "logLine":
                 for (const [id, client] of clients) {
-                    // client.newLog(payload.nameSpace, payload.file, payload.newLog);
+                    client.SendLog({ ...payload, harvester: this.nodeName });
                 }
                 break;
             default:

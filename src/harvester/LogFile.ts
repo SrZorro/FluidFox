@@ -5,13 +5,13 @@ import * as Debug from "debug";
 const debug = Debug("harvester:LogFile");
 
 export default class LogFile {
-    private nameSpace: string;
+    private application: string;
     private path: string;
-    private newLogCb: (nameSpace: string, file: string, newLog: string) => void;
+    private newLogCb: (application: string, file: string, newLog: string) => void;
     private currSize: number;
     private watcher: fs.FSWatcher;
-    constructor(nameSpace: string, path: string, newLogCb: (nameSpace: string, file: string, newLog: string) => void) {
-        this.nameSpace = nameSpace;
+    constructor(application: string, path: string, newLogCb: (application: string, file: string, newLog: string) => void) {
+        this.application = application;
         this.path = path;
         this.newLogCb = newLogCb;
 
@@ -62,7 +62,7 @@ export default class LogFile {
             if (lines[lines.lenght - 1] === "") lines.pop();
             debug(lines);
             for (const line of lines) {
-                this.newLogCb(this.nameSpace, this.path, line);
+                this.newLogCb(this.application, this.path, line);
             }
         });
     }

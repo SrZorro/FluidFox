@@ -3,49 +3,14 @@ const debug = Debug("elasticfoxweb:Client");
 import { observable } from "mobx";
 import EventEmitter from "./EventEmitter";
 
-// {
-//     "pg1": {
-//         "postgres": [
-//             "/var/log/postgres.log",
-//             "/var/log/patroni.log"
-//         ],
-//             "zabbix": [
-//                 "/var/log/zabbix_agent.log"
-//             ]
-//     },
-//     "pg2": {
-//         "postgres": [
-//             "/var/log/postgres.log",
-//             "/var/log/patroni.log"
-//         ],
-//             "zabbix": [
-//                 "/var/log/zabbix_agent.log"
-//             ]
-//     },
-//     "proxy": {
-//         "nginx": [
-//             "/var/log/nginx/access.log",
-//             "/var/log/nginx/error.log"
-//         ],
-//             "zabbix": [
-//                 "/var/log/zabbix_agent.log"
-//             ]
-//     },
-//     "multi1": {
-//         "zabbix_server": [
-//             {
-//                 "name": "zabbix server",
-//                 "file": "/var/log/zabbix_server.log"
-//             }
-//         ],
-//             "zabbix": [
-//                 "/var/log/zabbix_agent.log"
-//             ]
-//     }
-// }
-
+export interface ILog {
+    application: string;
+    file: string;
+    harvester: string;
+    line: string;
+}
 export default class Client extends EventEmitter {
-    @observable public test = "";
+    @observable public logs: ILog[] = [];
     @observable public colorMapings: Map<string, string> = new Map();
     @observable public checkedMappings: Map<string, boolean[]> = new Map();
     @observable public harvesters: {
@@ -146,48 +111,13 @@ export default class Client extends EventEmitter {
             case "harvestersList":
                 debug("recived harvesters");
                 this.harvesters = payload.harvesters;
-                // this.harvesters = {
-                //     pg1: {
-                //         postgres: [
-                //             "/var/log/postgres.log",
-                //             "/var/log/patroni.log"
-                //         ],
-                //         zabbix: [
-                //             "/var/log/zabbix_agent.log"
-                //         ]
-                //     },
-                //     pg2: {
-                //         postgres: [
-                //             "/var/log/postgres.log",
-                //             "/var/log/patroni.log"
-                //         ],
-                //         zabbix: [
-                //             "/var/log/zabbix_agent.log"
-                //         ]
-                //     },
-                //     proxy: {
-                //         nginx: [
-                //             "/var/log/nginx/access.log",
-                //             "/var/log/nginx/error.log"
-                //         ],
-                //         zabbix: [
-                //             "/var/log/zabbix_agent.log"
-                //         ]
-                //     },
-                //     multi1: {
-                //         zabbix_server: [
-                //             {
-                //                 name: "zabbix server",
-                //                 file: "/var/log/zabbix_server.log"
-                //             }
-                //         ],
-                //         zabbix: [
-                //             "/var/log/zabbix_agent.log"
-                //         ]
-                //     }
-                // };
                 this.generateColors();
                 this.updateCheckboxList();
+                break;
+            case "logLine":
+                debug(payload);
+                delete payload.state;
+                this.logs.push(payload as ILog);
                 break;
             default:
                 debug(`payload.state: ${state} is not a valid state`);

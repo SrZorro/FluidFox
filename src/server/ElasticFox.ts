@@ -68,6 +68,10 @@ export default class ElasticFox {
                 if (harvesters.has(ws.id)) {
                     harvesters.delete(ws.id);
                     debug(`Delete harvester: ${ws.id}`);
+                    // Update web clients
+                    for (const [key, client] of clients) {
+                        client.sendHarvestersList();
+                    }
                 }
                 if (clients.has(ws.id)) {
                     debug(`Delete client: ${ws.id}`);

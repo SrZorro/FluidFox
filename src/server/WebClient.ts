@@ -26,6 +26,10 @@ export default class WebClient {
         });
     }
 
+    public SendLog(payload) {
+        this.send(payload);
+    }
+
     public sendHarvestersList() {
         const response = {};
         for (const [key, harvester] of harvesters) {

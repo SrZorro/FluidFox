@@ -17,8 +17,9 @@ export default class Template extends Component<any, any> {
         return (
             <div class={classMain}>
                 <p style={{ "padding-right": 5, "color": this.props.harvesterColor }}>{this.props.harvester}</p>
+                <p style={{ "padding-right": 5, "color": this.props.applicationColor }}>{this.props.application}</p>
                 <p style={{ "padding-right": 5, "color": this.props.fileColor }}>{this.props.file}</p>
-                <p class={classLog}>{client.test}</p>
+                <p class={classLog}>{this.props.children}</p>
             </div>
         );
     }

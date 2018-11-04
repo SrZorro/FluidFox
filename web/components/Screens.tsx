@@ -1,5 +1,8 @@
 import { Component } from "inferno";
+import { inject, observer } from "inferno-mobx";
+import { computed } from "mobx";
 import { style } from "typestyle";
+import Client, { ILog } from "../Client";
 
 import Screen from "./Screen";
 import LogLine from "./LogLine";
@@ -12,17 +15,26 @@ const classMain = style({
     boxSizing: "border-box",
 });
 
+@inject("ElasticFox") @observer
 export default class Screens extends Component<any, any> {
+    @computed get logs() {
+        return this.props.ElasticFox.logs;
+    }
     public render() {
+        const nodes = this.logs.map((log: ILog) => {
+            return (<LogLine
+                harvester={log.harvester}
+                harvesterColor={(this.props.ElasticFox as Client).colorMapings.get(`${log.harvester}`)}
+                application={log.application}
+                applicationColor={(this.props.ElasticFox as Client).colorMapings.get(`${log.harvester}|${log.application}`)}
+                file={log.file}
+                fileColor={(this.props.ElasticFox as Client).colorMapings.get(`${log.harvester}|${log.application}|${log.file}`)}
+            >{log.line}</LogLine>);
+        });
         return (
             <div class={classMain}>
                 <Screen>
-                    <LogLine
-                        harvester="proxy1"
-                        harvesterColor="#aec7e8"
-                        file="zabbix.log"
-                        fileColor="#2ca02c"
-                    >tomate Domingo 4 de nov. de 2018 12:09:35 30648</LogLine>
+                    {nodes}
                 </Screen>
             </div>
         );

@@ -34,11 +34,11 @@ export default class Harvester extends EventEmitter {
                 },
             });
 
-            for (const logNamespace in config.logStreams) {
-                for (const i in config.logStreams[logNamespace]) {
-                    const obj = config.logStreams[logNamespace][i];
+            for (const blop in config.logStreams) {
+                for (const i in config.logStreams[blop]) {
+                    const obj = config.logStreams[blop][i];
                     const file = typeof obj === "string" ? obj : obj.file;
-                    this.logFiles.push(new LogFile(logNamespace, file, this.newLog.bind(this)));
+                    this.logFiles.push(new LogFile(blop, file, this.newLog.bind(this)));
                 }
             }
         });
@@ -62,12 +62,12 @@ export default class Harvester extends EventEmitter {
         });
     }
 
-    private newLog(nameSpace, file, newLog) {
+    private newLog(application, file, line) {
         this.send({
-            state: "newLog",
-            nameSpace,
+            state: "logLine",
+            application,
             file,
-            newLog,
+            line,
         });
     }
 
