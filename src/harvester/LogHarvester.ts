@@ -7,7 +7,10 @@ import { EventEmitter } from "events";
 export interface IConfig {
     nodeName: string;
     logStreams: {
-        [key: string]: string[];
+        [key: string]: string[] | {
+            file: string;
+            name: string;
+        }
     };
     server: {
         host: string;
@@ -32,8 +35,10 @@ export default class Harvester extends EventEmitter {
             });
 
             for (const logNamespace in config.logStreams) {
-                for (const logFile of config.logStreams[logNamespace]) {
-                    this.logFiles.push(new LogFile(logNamespace, logFile, this.newLog.bind(this)));
+                for (const i in config.logStreams[logNamespace]) {
+                    const obj = config.logStreams[logNamespace][i];
+                    const file = typeof obj === "string" ? obj : obj.file;
+                    this.logFiles.push(new LogFile(logNamespace, file, this.newLog.bind(this)));
                 }
             }
         });

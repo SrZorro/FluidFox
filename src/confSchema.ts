@@ -3,7 +3,7 @@ export const harvesterJsonSchema = {
     $schema: "http://json-schema.org/draft-07/schema#",
     $id: "http://example.com/root.json",
     type: "object",
-    title: "The Root Schema",
+    title: "Harvester configuration schema",
     required: [
         "nodeName",
         "logStreams",
@@ -31,11 +31,36 @@ export const harvesterJsonSchema = {
                     minItems: 1,
                     uniqueItems: true,
                     items: {
-                        type: "string",
-                        examples: [
-                            "/var/log/nginx/access.log",
-                            "/var/log/nginx/error.log",
-                        ],
+                        anyOf: [
+                            {
+                                type: "string",
+                                examples: [
+                                    "/var/log/nginx/access.log",
+                                    "/var/log/nginx/error.log",
+                                ]
+                            },
+                            {
+                                type: "object",
+                                required: [
+                                    "name",
+                                    "file"
+                                ],
+                                properties: {
+                                    name: {
+                                        type: "string"
+                                    },
+                                    file: {
+                                        type: "string"
+                                    }
+                                },
+                                examples: [
+                                    {
+                                        name: "Obscure log",
+                                        file: "/var/log/fjdshf.log"
+                                    }
+                                ],
+                            }
+                        ]
                     },
                 },
             },
