@@ -57,8 +57,6 @@ export default class ElasticFox {
                                 clients.set(ws.id, client);
                                 break;
                             }
-                            default:
-                                debug(`payload.state: '${payload.state}' is not a valid init state`);
                         }
                     }
                 } catch (err) {
