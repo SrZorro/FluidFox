@@ -2,16 +2,20 @@ localStorage.debug = "elasticfoxweb:*";
 import { render, Component } from "inferno";
 import { style } from "typestyle";
 import Controls from "./components/Controls";
-import ScreenContainer from "./components/ScreenContainer";
+import ScreenContainer from "./components/Screens";
 import Connecting from "./components/Connecting";
 import Client from "./Client";
+
 const classMain = style({
+    width: "100%",
+    height: "100%",
     display: "flex",
+    flexFlow: "row",
 });
 
 const app = document.getElementById("app");
 
-let client;
+export let client;
 
 export default class Main extends Component<any, any> {
     private client;
@@ -25,10 +29,8 @@ export default class Main extends Component<any, any> {
         this.reconnect();
     }
     public render() {
-        console.log(this.state);
         return (
-            this.state.isLoaded ? <div class={classMain}><Controls
-                harvestersList={this.state.harvestersList} /><ScreenContainer /></div> : <Connecting />
+            this.state.isLoaded ? <div class={classMain}><Controls /><ScreenContainer /></div> : <Connecting />
         );
     }
     private reconnect() {

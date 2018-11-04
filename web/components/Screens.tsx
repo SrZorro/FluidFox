@@ -11,7 +11,7 @@ const classMain = style({
     boxSizing: "border-box",
 });
 
-export default class ScreenContainer extends Component<any, any> {
+export default class Screens extends Component<any, any> {
     public render() {
         return (
             <div class={classMain}>
