@@ -8,6 +8,10 @@
         ],
         "object-literal-sort-keys": false,
         "forin": false,
-        "trailing-comma": false
+        "trailing-comma": false,
+        "max-line-length": [
+            true,
+            140
+        ]
     }
 }

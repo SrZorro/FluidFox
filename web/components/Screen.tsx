@@ -7,13 +7,15 @@ const classMain = style({
     boxSizing: "border-box",
     width: "100%",
     height: "100%",
+    overflowY: "auto",
+    padding: 10,
 });
 
 export default class Screen extends Component<any, any> {
     public render() {
         return (
             <div class={classMain}>
-                <h1>Hello world!</h1>
+                {this.props.children}
             </div>
         );
     }

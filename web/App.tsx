@@ -1,7 +1,8 @@
 localStorage.debug = "elasticfoxweb:*";
 import { render, Component } from "inferno";
+import { Provider } from "inferno-mobx";
 import { style } from "typestyle";
-import Controls from "./components/Controls";
+import Controls from "./components/control/Controls";
 import ScreenContainer from "./components/Screens";
 import Connecting from "./components/Connecting";
 import Client from "./Client";
@@ -30,13 +31,22 @@ export default class Main extends Component<any, any> {
     }
     public render() {
         return (
-            this.state.isLoaded ? <div class={classMain}><Controls /><ScreenContainer /></div> : <Connecting />
+            this.state.isLoaded ?
+                <Provider ElasticFox={client}>
+                    <div class={classMain}>
+                        <Controls />
+                        <ScreenContainer />
+                    </div>
+                </Provider>
+                : <Connecting />
         );
     }
     private reconnect() {
         client = null;
         setTimeout(() => {
             client = new Client();
+            // @ts-ignore
+            window.client = client;
             client.on("connected", () => {
                 this.setState({
                     isLoaded: true,
