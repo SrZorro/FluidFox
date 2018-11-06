@@ -7,8 +7,21 @@ const classMain = style({
     boxSizing: "border-box",
     width: "100%",
     height: "100%",
-    overflowY: "auto",
+    overflowY: "scroll",
     padding: 10,
+    $nest: {
+        "&::-webkit-scrollbar-track": {
+            boxShadow: "inset 0 0 6px rgba(0,0,0,0.3)",
+            backgroundColor: "hsla(0, 0%, 50%, 1)",
+        },
+        "&::-webkit-scrollbar": {
+            width: 6,
+            backgroundColor: "#F5F5F5",
+        },
+        "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "hsla(0, 0%, 35%, 1)",
+        }
+    }
 });
 
 export default class Screen extends Component<any, any> {
