@@ -8,7 +8,7 @@ const classMain = style({
     paddingTop: 8,
     paddingBottom: 12,
     color: "#666",
-    cursor: "pointer",
+    cursor: "not-allowed", // Should be 'pointer' but for now is disabled
     $nest: {
         "h1": {
             fontSize: 18,
@@ -21,7 +21,8 @@ const classMain = style({
 
 const classSelected = style({
     color: "#eee",
-    backgroundColor: "#333"
+    backgroundColor: "#333",
+    cursor: "default"
 });
 
 export default class Btn extends Component<any, any> {
