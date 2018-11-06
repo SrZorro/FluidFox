@@ -53,7 +53,7 @@ export default class ControlNode extends Component<any, any> {
         const isChecked = ElasticFox.checkedMappings.has(token) ? ElasticFox.checkedMappings.get(token)[0] : false;
         const color = ElasticFox.colorMapings.has(token) ? ElasticFox.colorMapings.get(token) : "black";
         return (
-            <div class={[classMain, classDepth[this.props.depth]].join(" ")}>
+            <div title={this.props.tooltip ? this.props.tooltip : ""} class={[classMain, classDepth[this.props.depth]].join(" ")}>
                 <div class={classCircle} style={isChecked ? { "background-color": color } : ""}></div>
                 <p>{this.props.children}</p>
                 <input

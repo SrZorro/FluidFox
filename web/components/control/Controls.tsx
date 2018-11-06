@@ -4,6 +4,7 @@ import { style } from "typestyle";
 import SearchBox from "./SearchBox";
 import Btn from "./Btn";
 import ControlNode from "./ControlNode";
+import { SplitPath } from "../../utils";
 import * as Debug from "debug";
 const debug = Debug("elasticfoxweb:Controls");
 
@@ -57,9 +58,11 @@ export default class Controls extends Component<any, IControlsState> {
 
                 for (const obj of app) {
                     const file = typeof obj === "string" ? obj : obj.file;
+                    const fileName = SplitPath(file)[SplitPath(file).length - 1];
                     token = `${harvesterName}|${appName}|${file}`;
-                    const name = typeof obj === "string" ? this.splitPath(obj)[this.splitPath(obj).length - 1] : obj.name;
-                    nodes.push(<ControlNode token={token} depth={2}>{name}</ControlNode>);
+                    const displayText = typeof obj === "string" ? fileName : obj.name;
+                    const tooltip = obj.name ? fileName : "";
+                    nodes.push(<ControlNode tooltip={tooltip} token={token} depth={2}>{displayText}</ControlNode>);
                 }
             }
         }
@@ -89,10 +92,6 @@ export default class Controls extends Component<any, IControlsState> {
                 </div>
             </div>
         );
-    }
-
-    private splitPath(path) {
-        return path.indexOf("/") !== -1 ? path.split("/") : path.split("\\");
     }
 
     private changeGroup(group: IGroupTypes) {
