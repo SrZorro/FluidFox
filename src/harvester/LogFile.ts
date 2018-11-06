@@ -59,7 +59,7 @@ export default class LogFile {
         rstream.on("data", (data) => {
             const lines = data.split(os.EOL);
             if (lines[0] === "") lines.shift();
-            if (lines[lines.lenght - 1] === "") lines.pop();
+            if (lines[lines.length - 1] === "") lines.pop();
             debug(lines);
             for (const line of lines) {
                 this.newLogCb(this.application, this.path, line);
