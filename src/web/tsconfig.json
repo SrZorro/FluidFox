@@ -2,22 +2,25 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "outDir": "./dist",
+        "outDir": "./dist/web",
         "lib": [
             "es6",
             "es7",
             "es2017",
-            "esnext"
+            "esnext",
+            "dom"
         ],
         "types": [
+            "inferno",
             "node"
-        ]
+        ],
+        "jsx": "preserve",
+        "experimentalDecorators": true
     },
     "include": [
-        "src/**/*"
+        "./**/*"
     ],
     "exclude": [
-        "node_modules",
-        "src/web"
+        "node_modules"
     ]
 }

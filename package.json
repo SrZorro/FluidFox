@@ -15,18 +15,19 @@
     "server:watch": "nodemon dist/index.js server conf/server.json",
     "harvester:watch": "nodemon dist/index.js harvester conf/harvester.json",
     "web": "node dist/index.js web conf/web.json",
-    "webpack:watch": "webpack --mode=development --watch --display-error-details"
+    "build:watch": "tsc --watch",
+    "build": "tsc",
+    "webpack:watch": "webpack --mode=development --watch --display-error-details",
+    "webpack": "webpack --mode=production"
   },
   "dependencies": {
     "ajv": "^6.5.4",
+    "chokidar": "^2.0.4",
     "commander": "^2.19.0",
     "debug": "^4.1.0",
     "events": "^3.0.0",
     "express": "^4.16.4",
-    "inferno": "^6.1.3",
-    "inferno-mobx": "^6.1.4",
-    "mobx": "^5.5.2",
-    "node-uuid": "^1.4.8",
+    "uuid": "^3.3.2",
     "ws": "^6.1.0"
   },
   "devDependencies": {
@@ -34,7 +35,9 @@
     "@types/node": "^10.12.2",
     "@types/node-uuid": "0.0.28",
     "@types/ws": "^6.0.1",
-    "chokidar": "^2.0.4",
+    "inferno": "^6.1.3",
+    "inferno-mobx": "^6.1.4",
+    "mobx": "^4",
     "html-webpack-plugin": "^3.2.0",
     "nodemon": "^1.18.6",
     "ts-loader": "^5.3.0",
@@ -46,6 +49,7 @@
     "webpack": "^4.24.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
+    "webpack-emit-all-plugin": "^2.0.1",
     "webpack-livereload-plugin": "^2.1.1"
   }
 }

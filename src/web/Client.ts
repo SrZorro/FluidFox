@@ -1,7 +1,7 @@
 import * as Debug from "debug";
 const debug = Debug("elasticfoxweb:Client");
 import { observable } from "mobx";
-import EventEmitter from "./EventEmitter";
+import { EventEmitter } from "events";
 
 export interface ILog {
     application: string;

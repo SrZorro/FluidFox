@@ -1,5 +1,5 @@
 import * as WebSocket from "ws";
-import * as uuid from "node-uuid";
+import * as uuid from "uuid/v1";
 import Harvester from "./Harvester";
 import WebClient from "./WebClient";
 import { IWebSocket } from "./types";

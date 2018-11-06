@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as program from "commander";
 import * as path from "path";
 import * as fs from "fs";
@@ -52,6 +54,10 @@ program
 
         Web(config.port);
     });
+
+if (!process.argv.slice(2).length) {
+    program.outputHelp();
+}
 
 program.parse(process.argv);
 
