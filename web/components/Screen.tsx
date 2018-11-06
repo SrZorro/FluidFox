@@ -25,9 +25,17 @@ const classMain = style({
 });
 
 export default class Screen extends Component<any, any> {
+    private screenContainer: HTMLDivElement;
+    public componentDidUpdate() {
+        const isScrolledToBottom = this.screenContainer.scrollHeight -
+            this.screenContainer.clientHeight <= this.screenContainer.scrollTop + 50;
+        if (isScrolledToBottom) {
+            this.screenContainer.scrollTop = this.screenContainer.scrollHeight;
+        }
+    }
     public render() {
         return (
-            <div class={classMain}>
+            <div ref={(node) => this.screenContainer = node} class={classMain}>
                 {this.props.children}
             </div>
         );
