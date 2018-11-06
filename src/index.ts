@@ -3,8 +3,10 @@ import * as path from "path";
 import * as fs from "fs";
 import * as Ajv from "ajv";
 import { harvesterJsonSchema } from "./confSchema";
-import ElasticFox from "./server/ElasticFox";
+import ElasticFox from "./server";
 import Harvester from "./harvester";
+import Web from "./web";
+
 const ajv = new Ajv();
 
 program
@@ -39,6 +41,16 @@ program
             }, 1000);
         }
 
+    });
+
+program
+    .command("web <config.json>")
+    .action((dir) => {
+        const config = loadConfig(dir);
+        if (!("port" in config)) return halt(`ERROR: config.port is not defined.`);
+        if (!(typeof config.port === "number")) return halt(`ERROR: config.port is not a number.`);
+
+        Web(config.port);
     });
 
 program.parse(process.argv);

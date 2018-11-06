@@ -2,8 +2,11 @@
     "nodeName": "application_server",
     "logStreams": {
         "harvester": [
-            "S:\\git\\Log.io\\logs\\logs.txt",
-            "S:\\git\\Log.io\\logs\\tomate.txt"
+            {
+                "name": "Every second",
+                "file": "/home/fox/git/Log.io/logs/date.txt"
+            },
+            "/home/fox/git/Log.io/logs/tomate.txt"
         ]
     },
     "server": {
