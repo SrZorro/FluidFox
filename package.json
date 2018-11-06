@@ -5,7 +5,7 @@
   "author": "Marc 'Fox' Salva Montaner <fox@foxdev.io>",
   "scripts": {
     "server:watch": "nodemon dist/index.js server conf/server.json",
-    "harvester:watch": "nodemon --inspect dist/index.js harvester conf/harvester.json",
+    "harvester:watch": "nodemon dist/index.js harvester conf/harvester.json",
     "webpack:watch": "webpack --mode=development --watch --display-error-details"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "@types/ws": "^6.0.1",
     "chokidar": "^2.0.4",
     "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.18.6",
     "ts-loader": "^5.3.0",
     "ts-node": "^7.0.1",
     "ts-transform-inferno": "^4.0.1",
