@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git@github.com:SrZorro/FluidFox.git"
   },
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "server:watch": "nodemon dist/index.js server conf/server.json",
     "harvester:watch": "nodemon dist/index.js harvester conf/harvester.json",
