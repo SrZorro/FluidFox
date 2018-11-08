@@ -4,6 +4,7 @@
   "version": "1.0.1",
   "author": "Marc 'Fox' Salva Montaner <fox@foxdev.io>",
   "bin": "dist/index.js",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:SrZorro/FluidFox.git"
