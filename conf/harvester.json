@@ -4,9 +4,9 @@
         "harvester": [
             {
                 "name": "Every second",
-                "file": "/home/fox/git/Log.io/logs/date.txt"
+                "file": "/home/fox/git/FluidFox/logs/date.txt"
             },
-            "/home/fox/git/Log.io/logs/tomate.txt"
+            "/home/fox/git/FluidFox/logs/tomate.txt"
         ]
     },
     "server": {

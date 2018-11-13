@@ -1,6 +1,6 @@
 import * as WebSocket from "ws";
 import * as Debug from "debug";
-const debug = Debug("harvester:Harvester");
+const debug = Debug("fluidfox:Harvester");
 import LogFile from "./LogFile";
 import { EventEmitter } from "events";
 

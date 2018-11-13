@@ -1,5 +1,5 @@
 import * as Debug from "debug";
-const debug = Debug("elasticfoxweb:Client");
+const debug = Debug("fluidfox:Client");
 import { observable } from "mobx";
 import { EventEmitter } from "events";
 

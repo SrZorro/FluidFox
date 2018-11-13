@@ -3,7 +3,7 @@ import { inject, observer } from "inferno-mobx";
 import { style } from "typestyle";
 import Client from "../../Client";
 import * as Debug from "debug";
-const debug = Debug("elasticfoxweb:ControlNode");
+const debug = Debug("fluidfox:ControlNode");
 
 const classMain = style({
     display: "flex",
@@ -53,13 +53,13 @@ const classIcon = [
 ];
 /* tslint:enable:max-line-length */
 
-@inject("ElasticFox") @observer
+@inject("FluidFox") @observer
 export default class ControlNode extends Component<any, any> {
     public render() {
-        const ElasticFox: Client = this.props.ElasticFox;
+        const FluidFox: Client = this.props.FluidFox;
         const token = this.props.token;
-        const isChecked = ElasticFox.checkedMappings.has(token) ? ElasticFox.checkedMappings.get(token)[0] : false;
-        const color = ElasticFox.colorMapings.has(token) ? ElasticFox.colorMapings.get(token) : "black";
+        const isChecked = FluidFox.checkedMappings.has(token) ? FluidFox.checkedMappings.get(token)[0] : false;
+        const color = FluidFox.colorMapings.has(token) ? FluidFox.colorMapings.get(token) : "black";
         return (
             <div title={this.props.tooltip ? this.props.tooltip : ""} class={[classMain, classDepth[this.props.depth]].join(" ")}>
                 <img src={classIcon[this.props.depth]} style={{ "width": "16px", "margin-left": "5px" }} alt="" />
@@ -69,7 +69,7 @@ export default class ControlNode extends Component<any, any> {
                     class={classCheckBox}
                     checked={isChecked}
                     onChange={(evt) => {
-                        ElasticFox.ToggleLog(token, (evt.target as HTMLInputElement).checked);
+                        FluidFox.ToggleLog(token, (evt.target as HTMLInputElement).checked);
                     }}
                     type="checkbox"
                 />

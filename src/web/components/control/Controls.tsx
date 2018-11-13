@@ -6,7 +6,7 @@ import Btn from "./Btn";
 import ControlNode from "./ControlNode";
 import { SplitPath } from "../../utils";
 import * as Debug from "debug";
-const debug = Debug("elasticfoxweb:Controls");
+const debug = Debug("fluidfox:Controls");
 
 const classMain = style({
     backgroundColor: "#333",
@@ -35,7 +35,7 @@ interface IControlsState {
 
 type IGroupTypes = "server" | "app" | "log";
 
-@inject("ElasticFox") @observer
+@inject("FluidFox") @observer
 export default class Controls extends Component<any, IControlsState> {
     constructor() {
         super();
@@ -46,7 +46,7 @@ export default class Controls extends Component<any, IControlsState> {
     public render() {
         const nodes = [];
         let token = "";
-        const harvesters = this.props.ElasticFox.harvesters;
+        const harvesters = this.props.FluidFox.harvesters;
 
         for (const [harvesterName, harvester] of Object.entries(harvesters)) {
             token = harvesterName;

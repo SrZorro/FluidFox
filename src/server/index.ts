@@ -1,3 +1,3 @@
-import ElasticFox from "./ElasticFox";
+import FluidFox from "./FluidFox";
 
-export default ElasticFox;
+export default FluidFox;

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as chokidar from "chokidar";
 import * as Debug from "debug";
-const debug = Debug("harvester:LogFile");
+const debug = Debug("fluidfox:LogFile");
 
 export default class LogFile {
     private application: string;

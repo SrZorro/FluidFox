@@ -1,4 +1,4 @@
-localStorage.debug = "elasticfoxweb:*";
+localStorage.debug = "fluidfox:*";
 import { render, Component } from "inferno";
 import { Provider } from "inferno-mobx";
 import { style } from "typestyle";
@@ -7,7 +7,7 @@ import ScreenContainer from "./components/Screens";
 import Connecting from "./components/Connecting";
 import Client from "./Client";
 import * as Debug from "debug";
-const debug = Debug("elasticfoxweb:");
+const debug = Debug("fluidfox:");
 
 const classMain = style({
     width: "100%",
@@ -34,7 +34,7 @@ export default class Main extends Component<any, any> {
     public render() {
         return (
             this.state.isLoaded ?
-                <Provider ElasticFox={client}>
+                <Provider FluidFox={client}>
                     <div class={classMain}>
                         <Controls />
                         <ScreenContainer />

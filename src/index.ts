@@ -5,7 +5,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as Ajv from "ajv";
 import { harvesterJsonSchema } from "./confSchema";
-import ElasticFox from "./server";
+import FluidFox from "./server";
 import Harvester from "./harvester";
 import Web from "./web";
 
@@ -18,7 +18,7 @@ program
         if (!("port" in config)) return halt(`ERROR: config.port is not defined.`);
         if (!(typeof config.port === "number")) return halt(`ERROR: config.port is not a number.`);
 
-        const server = new ElasticFox(config);
+        const server = new FluidFox(config);
     });
 
 program

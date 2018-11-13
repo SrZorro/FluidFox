@@ -1,7 +1,7 @@
 import { IWebSocket, IHarvesterConf } from "./types";
-import { clients } from "./ElasticFox";
+import { clients } from "./FluidFox";
 import * as Debug from "debug";
-const debug = Debug("elasticfox:Harvester");
+const debug = Debug("fluidfox:Harvester");
 
 export default class Harvester {
     public nodeName: string;

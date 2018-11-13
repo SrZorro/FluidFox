@@ -1,7 +1,7 @@
 import * as Debug from "debug";
-const debug = Debug("elasticfox:Client");
+const debug = Debug("fluidfox:Client");
 import { IWebSocket } from "./types";
-import { harvesters } from "./ElasticFox";
+import { harvesters } from "./FluidFox";
 
 export default class WebClient {
     private ws: IWebSocket;

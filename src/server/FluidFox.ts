@@ -4,7 +4,7 @@ import Harvester from "./Harvester";
 import WebClient from "./WebClient";
 import { IWebSocket } from "./types";
 import * as Debug from "debug";
-const debug = Debug("elasticfox:");
+const debug = Debug("fluidfox:");
 
 export const harvesters: Map<string, Harvester> = new Map();
 export const clients: Map<string, WebClient> = new Map();
@@ -13,7 +13,7 @@ interface IConfig {
     port: number;
 }
 
-export default class ElasticFox {
+export default class FluidFox {
     private wss: WebSocket.Server;
     constructor(config: IConfig) {
         debug("Init");

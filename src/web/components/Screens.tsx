@@ -15,24 +15,24 @@ const classMain = style({
     boxSizing: "border-box",
 });
 
-@inject("ElasticFox") @observer
+@inject("FluidFox") @observer
 export default class Screens extends Component<any, any> {
     @computed get logs() {
-        return this.props.ElasticFox.logs;
+        return this.props.FluidFox.logs;
     }
     @computed get checkedMappings() {
-        return this.props.ElasticFox.checkedMappings;
+        return this.props.FluidFox.checkedMappings;
     }
     public render() {
         const nodes = this.logs.reduce((filtered: JSX.Element[], log: ILog) => {
             if (this.checkedMappings.get(`${log.harvester}|${log.application}|${log.file}`)[0]) {
                 filtered.push(<LogLine
                     harvester={log.harvester}
-                    harvesterColor={(this.props.ElasticFox as Client).colorMapings.get(`${log.harvester}`)}
+                    harvesterColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}`)}
                     application={log.application}
-                    applicationColor={(this.props.ElasticFox as Client).colorMapings.get(`${log.harvester}|${log.application}`)}
+                    applicationColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}|${log.application}`)}
                     file={log.file}
-                    fileColor={(this.props.ElasticFox as Client).colorMapings.get(`${log.harvester}|${log.application}|${log.file}`)}
+                    fileColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}|${log.application}|${log.file}`)}
                 >{log.line}</LogLine>);
             }
             return filtered;
