@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const EmitAllPlugin = require('webpack-emit-all-plugin');
 const webpack = require("webpack");
 const path = require("path");
 const transformInferno = require("ts-transform-inferno").default;
@@ -16,7 +15,7 @@ module.exports = [
             __dirname: false
         },
         resolve: {
-            mainFields: ["main"], // Important so Webpack resolves the main field of package.json for Classcat
+            mainFields: ["main"],
             extensions: [".js", ".jsx", ".ts", ".tsx"]
         },
         module: {
