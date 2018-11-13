@@ -1,4 +1,4 @@
-# FluidFox - Real-time log monitoring in your browser based in [NarrativeScience/Log.io](https://github.com/NarrativeScience/Log.io) 
+# FluidFox - Real-time log monitoring in your browser based in [NarrativeScience/Log.io](https://github.com/NarrativeScience/Log.io)
 
 > WARNING: FluidFox its not yet production ready, use it with caution.
 
