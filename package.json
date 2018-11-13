@@ -1,7 +1,7 @@
 {
   "name": "fluidfox",
   "description": "Realtime log monitoring in your browser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Marc 'Fox' Salva Montaner <fox@foxdev.io>",
   "bin": "dist/index.js",
   "license": "MIT",

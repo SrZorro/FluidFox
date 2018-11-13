@@ -9,6 +9,10 @@ export interface ILog {
     harvester: string;
     line: string;
 }
+interface IServerConf {
+    ip: string;
+    port: number;
+}
 export default class Client extends EventEmitter {
     @observable public logs: ILog[] = [];
     @observable public colorMapings: Map<string, string> = new Map();
@@ -25,39 +29,49 @@ export default class Client extends EventEmitter {
     constructor() {
         super();
         debug("Client inited");
-        this.ws = new WebSocket(`ws://127.0.0.1:28777`);
-        this.ws.onopen = () => {
-            debug("connected");
-            this.emit("connected");
-            this.send({
-                state: "initClient",
-            });
-        };
+        fetch("/server").then((resp) => {
+            debug("Recived server config from web server");
+            return resp.json();
+        }).then((serverConf: IServerConf) => {
+            debug("Starting connection");
+            this.ws = new WebSocket(`ws://${serverConf.ip}:${serverConf.port}`);
+            this.ws.onopen = () => {
+                debug("connected");
+                this.emit("connected");
+                this.send({
+                    state: "initClient",
+                });
+            };
 
-        this.ws.onclose = () => {
-            debug("Server disconnected");
-            this.ws.onclose = undefined;
-            this.ws.onerror = undefined;
-            this.ws.onopen = undefined;
-            this.ws.onmessage = undefined;
-            this.ws.close();
-            this.emit("die");
-        };
+            this.ws.onerror = () => {
+                debug("Server connection failed");
+            };
 
-        this.ws.onmessage = (data) => {
-            let json;
-            try {
-                json = JSON.parse(data.data.toString());
-                debug(json);
-            } catch (err) {
-                debug(err);
-                return;
-                // Failed in JSON parse, don't care yet
-            }
-            if ("state" in json) {
-                this.state(json.state, json);
-            }
-        };
+            this.ws.onclose = () => {
+                debug("Server disconnected");
+                this.ws.onclose = undefined;
+                this.ws.onerror = undefined;
+                this.ws.onopen = undefined;
+                this.ws.onmessage = undefined;
+                this.ws.close();
+                this.emit("die");
+            };
+
+            this.ws.onmessage = (data) => {
+                let json;
+                try {
+                    json = JSON.parse(data.data.toString());
+                    debug(json);
+                } catch (err) {
+                    debug(err);
+                    return;
+                    // Failed in JSON parse, don't care yet
+                }
+                if ("state" in json) {
+                    this.state(json.state, json);
+                }
+            };
+        });
     }
 
     public ToggleLog(key: string, isVisible: boolean) {

@@ -6,6 +6,8 @@ import Controls from "./components/control/Controls";
 import ScreenContainer from "./components/Screens";
 import Connecting from "./components/Connecting";
 import Client from "./Client";
+import * as Debug from "debug";
+const debug = Debug("elasticfoxweb:");
 
 const classMain = style({
     width: "100%",
@@ -56,6 +58,7 @@ export default class Main extends Component<any, any> {
                 this.setState({
                     isLoaded: false,
                 });
+                debug("Retrying connection...");
                 this.reconnect();
             });
             client.on("harvestersList", (harvestersList) => {

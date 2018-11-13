@@ -1,22 +1,22 @@
-FluidFox - Real-time log monitoring in your browser based in [NarrativeScience/Log.io](https://github.com/NarrativeScience/Log.io) 
-===
+# FluidFox - Real-time log monitoring in your browser based in [NarrativeScience/Log.io](https://github.com/NarrativeScience/Log.io) 
+
 > WARNING: FluidFox its not yet production ready, use it with caution.
 
-# Installation
+## Installation
 
 `npm i -g fluidfox`
 
 And you are ready, execute `fluidfox` to see the help page.
 
-
-# Running the server
+## Running the server
 
 1. Create or edit a json file where your server configuration is going to live.
 
 `> cat server.json`
+
 ```json
 {
-    "port": 28777 // Port where your server is listening for socket connections
+    "port": 28777
 }
 ```
 
@@ -24,11 +24,12 @@ And you are ready, execute `fluidfox` to see the help page.
 
 `fluidfox server server.json`
 
-# Runing the harvester
+## Runing the harvester
 
 1. Create or edit a json file where your harvester configuration is going to live.
 
 `> cat harvester.json`
+
 ```json
 {
     "nodeName": "application_server",
@@ -45,7 +46,7 @@ And you are ready, execute `fluidfox` to see the help page.
         ]
     },
     "server": {
-        "host": "localhost",
+        "host": "your_server_here",
         "port": 28777
     }
 }
@@ -57,14 +58,19 @@ And you are ready, execute `fluidfox` to see the help page.
 
 Harvester will connect to the server and watch your files, when a file is modified, the new lines will be sended to the server.
 
-# Running the web server
+## Running the web server
 
 1. Create or edit a json file where your client configuration is going to live.
 
 `> cat web.json`
+
 ```json
 {
-    "port": 8080 // Port where the web server will be accesible
+    "port": 8080,
+    "server": {
+        "ip": "your_server_here",
+        "port": 28777
+    }
 }
 ```
 
