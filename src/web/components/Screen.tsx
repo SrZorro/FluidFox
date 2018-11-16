@@ -1,4 +1,6 @@
 import { Component } from "inferno";
+import { inject, observer } from "inferno-mobx";
+import { computed } from "mobx";
 import { style } from "typestyle";
 
 const classMain = style({
@@ -24,7 +26,11 @@ const classMain = style({
     }
 });
 
+@inject("FluidFox") @observer
 export default class Screen extends Component<any, any> {
+    @computed get logs() {
+        return this.props.FluidFox.logs;
+    }
     private screenContainer: HTMLDivElement;
     public componentDidUpdate() {
         const isScrolledToBottom = this.screenContainer.scrollHeight -
@@ -36,6 +42,7 @@ export default class Screen extends Component<any, any> {
     public render() {
         return (
             <div ref={(node) => this.screenContainer = node} class={classMain}>
+                <button onclick={() => { this.props.FluidFox.RequestLogHistory(); }}>Fetch past</button>
                 {this.props.children}
             </div>
         );

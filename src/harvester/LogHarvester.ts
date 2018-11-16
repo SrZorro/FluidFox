@@ -18,6 +18,16 @@ export interface IConfig {
     };
 }
 
+export interface ILog {
+    application: string;
+    file: string;
+    data: string;
+    offset: {
+        start: number;
+        end: number;
+    };
+}
+
 export default class Harvester extends EventEmitter {
     private ws: WebSocket;
     private logFiles: LogFile[] = [];
@@ -34,12 +44,27 @@ export default class Harvester extends EventEmitter {
                 },
             });
 
-            for (const blop in config.logStreams) {
-                for (const i in config.logStreams[blop]) {
-                    const obj = config.logStreams[blop][i];
-                    const file = typeof obj === "string" ? obj : obj.file;
-                    this.logFiles.push(new LogFile(blop, file, this.newLog.bind(this)));
+            for (const applicationName in config.logStreams) {
+                for (const i in config.logStreams[applicationName]) {
+                    const obj = config.logStreams[applicationName][i];
+                    const filePath = typeof obj === "string" ? obj : obj.file;
+                    this.logFiles.push(new LogFile(applicationName, filePath, this));
                 }
+            }
+        });
+
+        this.ws.on("message", (data) => {
+            let json;
+            try {
+                json = JSON.parse(data.toString());
+                debug(json);
+            } catch (err) {
+                debug(err);
+                return;
+                // Failed in JSON parse, don't care yet
+            }
+            if ("state" in json) {
+                this.state(json.state, json);
             }
         });
 
@@ -50,7 +75,7 @@ export default class Harvester extends EventEmitter {
         this.ws.on("close", () => {
             debug("Server disconnected");
             this.logFiles.map((logFile, i) => {
-                this.logFiles[i].destroy();
+                this.logFiles[i].Destroy();
                 delete this.logFiles[i];
             });
             this.ws.removeAllListeners("open");
@@ -62,13 +87,31 @@ export default class Harvester extends EventEmitter {
         });
     }
 
-    private newLog(application, file, line) {
+    public NewLog(log: ILog) {
+        debug("test");
         this.send({
-            state: "logLine",
-            application,
-            file,
-            line,
+            state: "logBlop",
+            ...log
         });
+    }
+
+    private state(state: string, payload) {
+        switch (state) {
+            case "fetchPastLogs":
+                const request: {
+                    state: "fetchPastLogs", harvester: string, application: string,
+                    file: string, offsetEnd: number
+                } = payload;
+                debug(payload);
+                this.logFiles.forEach((logFile) => {
+                    if (logFile.Application === request.application && logFile.Path === request.file) {
+                        logFile.FetchPastLogs(request.offsetEnd);
+                    }
+                });
+                break;
+            default:
+                debug(`payload.state: ${state} is not a valid state`);
+        }
     }
 
     private send(json) {

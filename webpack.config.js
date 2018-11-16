@@ -11,6 +11,7 @@ module.exports = [
             path: path.resolve(__dirname, "dist/web"),
             filename: "bundle.js"
         },
+        devtool: "eval",
         node: {
             __dirname: false
         },

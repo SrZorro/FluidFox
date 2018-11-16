@@ -48,6 +48,17 @@ export default class WebClient {
 
     private state(state: string, payload) {
         switch (state) {
+            case "fetchPastLogs":
+                const request: {
+                    state: "fetchPastLogs", harvester: string, application: string,
+                    file: string, offsetEnd: number
+                } = payload;
+                harvesters.forEach((harvester) => {
+                    if (harvester.nodeName === request.harvester) {
+                        harvester.Send(request);
+                    }
+                });
+                break;
             default:
                 debug(`payload.state: ${state} is not a valid state`);
         }

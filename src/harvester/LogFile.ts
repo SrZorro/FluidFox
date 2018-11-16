@@ -2,38 +2,52 @@ import * as fs from "fs";
 import * as os from "os";
 import * as chokidar from "chokidar";
 import * as Debug from "debug";
+import Harvester from "./LogHarvester";
 const debug = Debug("fluidfox:LogFile");
 
+const PAST_FETCH_OFFSET = 100;
+
 export default class LogFile {
-    private application: string;
-    private path: string;
-    private newLogCb: (application: string, file: string, newLog: string) => void;
-    private currSize: number;
+    public Application: string;
+    public Path: string;
+    private harvester: Harvester;
     private watcher: fs.FSWatcher;
-    constructor(application: string, path: string, newLogCb: (application: string, file: string, newLog: string) => void) {
-        this.application = application;
-        this.path = path;
-        this.newLogCb = newLogCb;
+    constructor(application: string, path: string, harvester: Harvester) {
+        this.Application = application;
+        this.Path = path;
+        this.harvester = harvester;
 
         this.watch();
     }
 
-    public destroy() {
+    public Destroy() {
         this.watcher.close();
-        this.newLogCb = () => { /* void */ };
+    }
+
+    public FetchPastLogs(offsetEnd: number) {
+        offsetEnd = offsetEnd === null ? fs.statSync(this.Path).size : offsetEnd;
+        let offsetStart = offsetEnd - PAST_FETCH_OFFSET >= 0 ? offsetEnd - PAST_FETCH_OFFSET : 0;
+        this.readfromTo(offsetStart, offsetEnd, (data) => {
+            // Remove first line because it will be incomplete
+            const lines = data.split(os.EOL);
+            if (lines.length >= 2) {
+                offsetStart = offsetStart - Buffer.byteLength(lines.shift(), "utf8");
+                this.newLog(lines.join(os.EOL), offsetStart, offsetEnd);
+            }
+        });
     }
 
     private watch() {
-        if (!fs.existsSync(this.path)) {
-            debug(`File ${this.path} does not exist!`);
+        if (!fs.existsSync(this.Path)) {
+            debug(`File ${this.Path} does not exist!`);
             setTimeout(() => this.watch(), 1000);
             return;
         }
 
-        debug(`Watching file: ${this.path}`);
+        debug(`Watching file: ${this.Path}`);
 
-        let prevSize = fs.statSync(this.path).size;
-        this.watcher = chokidar.watch(this.path);
+        let prevStart = fs.statSync(this.Path).size;
+        this.watcher = chokidar.watch(this.Path);
 
         this.watcher.on("unlink", (path) => {
             // File has ben rotated, start new watcher
@@ -43,26 +57,34 @@ export default class LogFile {
 
         this.watcher.on("change", (path, stat) => {
             const stats = ((stat as unknown) as fs.Stats);
-            debug(`prev: ${prevSize} curr: ${stats.size}`);
-            this.readChanges(stats.size, prevSize);
-            prevSize = stats.size;
+            debug(`from: ${prevStart} to: ${stats.size}`);
+            const start = prevStart;
+            this.readfromTo(start, stats.size, (data) => {
+                this.newLog(data, prevStart, stats.size);
+            });
+            prevStart = stats.size;
         });
     }
 
-    private readChanges(curr, prev) {
-        if (curr < prev) return;
-        const rstream = fs.createReadStream(this.path, {
+    private readfromTo(start: number, end: number, cb: (data: string) => void) {
+        if (end <= start) return;
+        const rstream = fs.createReadStream(this.Path, {
             encoding: "utf8",
-            start: prev,
-            end: curr,
+            start,
+            end,
         });
         rstream.on("data", (data) => {
-            const lines = data.split(os.EOL);
-            if (lines[0] === "") lines.shift();
-            if (lines[lines.length - 1] === "") lines.pop();
-            debug(lines);
-            for (const line of lines) {
-                this.newLogCb(this.application, this.path, line);
+            cb(data);
+        });
+    }
+    private newLog(data: string, start: number, end: number) {
+        this.harvester.NewLog({
+            application: this.Application,
+            data: data.slice(0, -1),
+            file: this.Path,
+            offset: {
+                start,
+                end
             }
         });
     }

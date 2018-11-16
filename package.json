@@ -13,13 +13,12 @@
     "/dist"
   ],
   "scripts": {
+    "dev": "npm-run-all --parallel server:watch harvester:watch web:watch",
     "server:watch": "nodemon dist/index.js server conf/server.json",
     "harvester:watch": "nodemon dist/index.js harvester conf/harvester.json",
-    "web": "node dist/index.js web conf/web.json",
-    "build:watch": "tsc --watch",
-    "build": "tsc",
-    "webpack:watch": "webpack --mode=development --watch --display-error-details",
-    "webpack": "webpack --mode=production"
+    "web:watch": "nodemon dist/index.js web conf/web.json",
+    "build:watch": "concurrently \"tsc --watch\" \"webpack --mode=development --watch --display-error-details\"",
+    "build": "concurrently \"tsc\" \"webpack --mode=production\""
   },
   "dependencies": {
     "ajv": "^6.5.4",
@@ -35,11 +34,13 @@
     "@types/debug": "0.0.31",
     "@types/node": "^10.12.2",
     "@types/ws": "^6.0.1",
+    "concurrently": "^4.0.1",
     "html-webpack-plugin": "^3.2.0",
     "inferno": "^6.1.3",
     "inferno-mobx": "^6.1.4",
     "mobx": "^4",
     "nodemon": "^1.18.6",
+    "npm-run-all": "^4.1.3",
     "ts-loader": "^5.3.0",
     "ts-transform-inferno": "^4.0.1",
     "tslint": "^5.11.0",

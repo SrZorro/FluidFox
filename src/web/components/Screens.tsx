@@ -1,3 +1,5 @@
+import * as Debug from "debug";
+const debug = Debug("fluidfox:Screens");
 import { Component } from "inferno";
 import { inject, observer } from "inferno-mobx";
 import { computed } from "mobx";
@@ -26,14 +28,16 @@ export default class Screens extends Component<any, any> {
     public render() {
         const nodes = this.logs.reduce((filtered: JSX.Element[], log: ILog) => {
             if (this.checkedMappings.get(`${log.harvester}|${log.application}|${log.file}`)[0]) {
-                filtered.push(<LogLine
-                    harvester={log.harvester}
-                    harvesterColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}`)}
-                    application={log.application}
-                    applicationColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}|${log.application}`)}
-                    file={log.file}
-                    fileColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}|${log.application}|${log.file}`)}
-                >{log.line}</LogLine>);
+                for (const line of log.data.split("\n")) {
+                    filtered.push(<LogLine
+                        harvester={log.harvester}
+                        harvesterColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}`)}
+                        application={log.application}
+                        applicationColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}|${log.application}`)}
+                        file={log.file}
+                        fileColor={(this.props.FluidFox as Client).colorMapings.get(`${log.harvester}|${log.application}|${log.file}`)}
+                    >{line}</LogLine>);
+                }
             }
             return filtered;
         }, []);

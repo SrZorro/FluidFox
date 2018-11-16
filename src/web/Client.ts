@@ -5,9 +5,13 @@ import { EventEmitter } from "events";
 
 export interface ILog {
     application: string;
-    file: string;
     harvester: string;
-    line: string;
+    file: string;
+    data: string;
+    offset: {
+        start: number;
+        end: number;
+    };
 }
 interface IServerConf {
     ip: string;
@@ -25,6 +29,7 @@ export default class Client extends EventEmitter {
             }>
         }
     } = {};
+    private logBounds: Map<string, { start: number; end: number }> = new Map();
     private ws: WebSocket;
     constructor() {
         super();
@@ -61,7 +66,7 @@ export default class Client extends EventEmitter {
                 let json;
                 try {
                     json = JSON.parse(data.data.toString());
-                    debug(json);
+                    // debug(json);
                 } catch (err) {
                     debug(err);
                     return;
@@ -71,6 +76,8 @@ export default class Client extends EventEmitter {
                     this.state(json.state, json);
                 }
             };
+        }).catch(() => {
+            window.location.reload();
         });
     }
 
@@ -120,6 +127,24 @@ export default class Client extends EventEmitter {
         nChecks.set(harvesterName, [childs.every((v) => v)]);
     }
 
+    public RequestLogHistory() {
+        for (const harvester in this.harvesters) {
+            for (const application in this.harvesters[harvester]) {
+                for (const obj of this.harvesters[harvester][application]) {
+                    const file = typeof obj === "string" ? obj : obj.file;
+                    const key = `${harvester}|${application}|${file}`;
+                    debug("Fetch past history");
+                    this.send({
+                        state: "fetchPastLogs",
+                        harvester, application, file,
+                        offsetEnd: this.logBounds.has(key) ? this.logBounds.get(key).end : null
+                    });
+                }
+
+            }
+        }
+    }
+
     private state(state: string, payload) {
         switch (state) {
             case "harvestersList":
@@ -128,10 +153,30 @@ export default class Client extends EventEmitter {
                 this.generateColors();
                 this.updateCheckboxList();
                 break;
-            case "logLine":
-                debug(payload);
+            case "logBlop":
                 delete payload.state;
-                this.logs.push(payload as ILog);
+                const log = payload as ILog;
+                const key = `${log.harvester}|${log.application}|${log.file}`;
+                const currOffset: { start: number; end: number } = this.logBounds.has(key) ?
+                    this.logBounds.get(key) : { start: null, end: null };
+
+                debug(`log.end: ${log.offset.end} <= ${currOffset.start} curStart ${log.offset.end <= currOffset.start}`);
+                if ((currOffset.start === null && currOffset.end === null)) {
+                    debug("unshift");
+                    this.logs.unshift(log);
+                    currOffset.start = log.offset.start;
+                    currOffset.end = currOffset.end === null ? log.offset.end : currOffset.end;
+                } else if (log.offset.start >= currOffset.end) {
+                    debug("push");
+                    this.logs.push(log);
+                    currOffset.start = currOffset.start === null ? log.offset.start : currOffset.start;
+                    currOffset.end = log.offset.end;
+                } else {
+                    alert("This should never happen");
+                    debug("This should never happen");
+                }
+                debug(currOffset);
+                this.logBounds.set(key, currOffset);
                 break;
             default:
                 debug(`payload.state: ${state} is not a valid state`);

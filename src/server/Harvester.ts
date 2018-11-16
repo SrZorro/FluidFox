@@ -30,9 +30,13 @@ export default class Harvester {
         });
     }
 
+    public Send(json) {
+        this.ws.send(JSON.stringify(json));
+    }
+
     private state(state: string, payload) {
         switch (state) {
-            case "logLine":
+            case "logBlop":
                 for (const [id, client] of clients) {
                     client.SendLog({ ...payload, harvester: this.nodeName });
                 }
