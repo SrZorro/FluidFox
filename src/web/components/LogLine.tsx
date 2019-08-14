@@ -6,7 +6,7 @@ import { client } from "../App";
 const classMain = style({
     display: "flex",
     fontSize: 13,
-    height: 16,
+    height: "auto",
 });
 
 const classLog = style({
